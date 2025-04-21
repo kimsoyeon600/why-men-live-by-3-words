@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>영어 단어 퀴즈</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 30px; background: #f0f8ff; }
+    h1 { color: #333366; }
+    button {
+      margin: 10px 0;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #88ccff;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #66bbff;
+    }
+  </style>
+</head>
+<body>
+  <h1>영어 단어 맞추기 퀴즈 🎯</h1>
+  <div id="quiz">
+    <p id="question">문제가 여기에 나와요!</p>
+    <div id="choices"></div>
+    <button onclick="nextQuestion()">다음 문제</button>
+  </div>
+  <script>
+    const wordList = [
+      {word: "yarn", meaning: "털실"},
+      {word: "twist", meaning: "꼬다, 비틀다"},
+      {word: "catch the knack", meaning: "요령이 생기다, 감 잡다"},
+      {word: "thumb", meaning: "엄지손가락"},
+      {word: "wax", meaning: "왁스를 바르다 / 왁스"},
+      {word: "thread", meaning: "실"},
+      {word: "bristle", meaning: "뻣뻣한 털, 강모"},
+      {word: "well off", meaning: "부유한, 형편이 좋은"},
+      {word: "sledge-runners", meaning: "썰매 바퀴"},
+      {word: "carriage", meaning: "마차"},
+      {word: "stoop", meaning: "몸을 굽히다"},
+      {word: "bow", meaning: "인사하다, 고개를 숙이다"},
+      {word: "astonishment", meaning: "놀라움, 경악"},
+      {word: "burly", meaning: "건장한, 육중한"},
+      {word: "lintel", meaning: "문틀의 윗부분"},
+      {word: "look altogether", meaning: "전반적으로 ~해 보이다"},
+      {word: "cast in iron", meaning: "쇠로 만들어진 듯 단단한"},
+      {word: "grin at", meaning: "보고 씩 웃다"},
+      {word: "mallet", meaning: "나무망치, 큰 망치"},
+      {word: "just so", meaning: "바로 그렇지"},
+      {word: "unsown", meaning: "꿰매지 않은"},
+      {word: "glance at", meaning: "힐끗 보다"},
+      {word: "nudge", meaning: "(팔꿈치로) 쿡 찌르다"},
+      {word: "undertake", meaning: "착수하다, 맡다"},
+      {word: "so as to", meaning: "~하기 위해서"},
+      {word: "soil", meaning: "더럽히다, 얼룩지게 하다"},
+      {word: "sole", meaning: "발바닥, 밑창"},
+      {word: "instep", meaning: "발등"},
+      {word: "calf", meaning: "종아리"},
+      {word: "beam", meaning: "대들보, 굵은 구조물"}
+    ];
+
+    let currentQuestion;
+
+    function shuffle(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function nextQuestion() {
+      const question = wordList[Math.floor(Math.random() * wordList.length)];
+      currentQuestion = question;
+      document.getElementById("question").innerText = `"${question.word}" 의 뜻은 무엇일까요?`;
+
+      const choices = shuffle([
+        question.meaning,
+        ...shuffle(wordList)
+          .filter(w => w.word !== question.word)
+          .slice(0, 3)
+          .map(w => w.meaning)
+      ]);
+
+      const choiceHTML = choices.map(choice => `
+        <button onclick="checkAnswer('${choice}')">${choice}</button>
+      `).join("<br>");
+
+      document.getElementById("choices").innerHTML = choiceHTML;
+    }
+
+    function checkAnswer(answer) {
+      if (answer === currentQuestion.meaning) {
+        alert("🎉 정답입니다!");
+      } else {
+        alert(`❌ 아쉽네요! 정답은 "${currentQuestion.meaning}" 이에요.`);
+      }
+    }
+
+    nextQuestion();
+  </script>
+</body>
+</html>
